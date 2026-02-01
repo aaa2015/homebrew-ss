@@ -1,6 +1,6 @@
-# Homebrew Tap: ss-apple
+# Homebrew Tap: ss
 
-This is a Homebrew tap for [ss-apple](https://github.com/aaa2015/myiosss) - a Linux `ss` command implementation for macOS.
+This is a Homebrew tap for [ss](https://github.com/aaa2015/myiosss) - a Linux `ss` command implementation for macOS.
 
 ## Installation
 
@@ -8,30 +8,30 @@ This is a Homebrew tap for [ss-apple](https://github.com/aaa2015/myiosss) - a Li
 # Add the tap
 brew tap aaa2015/ss
 
-# Install ss-apple
-brew install ss-apple
+# Install ss
+brew install aaa2015/ss/ss
 
 # Use it
-ss-apple -tulnp
+ss -tulnp
 ```
 
 ## Available Formulae
 
 | Formula | Description |
 |---------|-------------|
-| ss-apple | Socket statistics tool for macOS (Linux ss command clone) |
+| ss | Socket statistics tool for macOS (Linux ss command clone) |
 
 ## Usage
 
 ```bash
 # Show listening TCP/UDP sockets with process info
-ss-apple -tulnp
+ss -tulnp
 
 # Show established connections
-ss-apple -t state established
+ss -t state established
 
 # Show help
-ss-apple -h
+ss -h
 ```
 
 ## More Information

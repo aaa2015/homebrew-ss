@@ -1,13 +1,7 @@
-# Homebrew Formula for ss-apple
+# Homebrew Formula for ss
 # Socket Statistics tool for macOS (Linux ss command clone)
-#
-# To use this formula:
-# 1. Create a new GitHub repo named "homebrew-ss"
-# 2. Create Formula/ directory in that repo
-# 3. Copy this file to Formula/ss-apple.rb
-# 4. Users can then install with: brew tap aaa2015/ss && brew install ss-apple
 
-class SsApple < Formula
+class Ss < Formula
   desc "Socket statistics tool for macOS (Linux ss command clone)"
   homepage "https://github.com/aaa2015/myiosss"
   url "https://github.com/aaa2015/myiosss/archive/v1.0.0.tar.gz"
@@ -19,10 +13,10 @@ class SsApple < Formula
 
   def install
     system "make", "macos"
-    bin.install "build/ss" => "ss-apple"
+    bin.install "build/ss"
   end
 
   test do
-    assert_match "ss (Darwin) version", shell_output("#{bin}/ss-apple -V")
+    assert_match "ss (Darwin) version", shell_output("#{bin}/ss -V")
   end
 end
