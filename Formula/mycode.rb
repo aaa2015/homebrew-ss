@@ -54,12 +54,15 @@ class GitHubPrivateRepositoryReleaseDownloadStrategy < CurlDownloadStrategy
     require "json"
     begin
       release = JSON.parse(output)
+      if release.key?("message")
+        raise CurlDownloadStrategyError, "GitHub API error: '#{release["message"]}'. Please verify your HOMEBREW_GITHUB_API_TOKEN is valid and has 'repo' scope."
+      end
       assets = release["assets"] || []
       asset = assets.find { |a| a["name"] == @filename }
       raise CurlDownloadStrategyError, "Asset #{@filename} not found in release #{@tag}." if asset.nil?
       asset["id"]
     rescue JSON::ParserError => e
-      raise CurlDownloadStrategyError, "Failed to parse release metadata JSON: #{e.message}"
+      raise CurlDownloadStrategyError, "Failed to parse release metadata JSON: #{e.message}. Raw output: #{output}"
     end
   end
 end
