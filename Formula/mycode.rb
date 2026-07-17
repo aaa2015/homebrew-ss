@@ -70,14 +70,14 @@ end
 class Mycode < Formula
   desc "AI coding assistant with TUI interface"
   homepage "https://github.com/aaa2015/mycode"
-  version "0.1.8"
+  version "0.1.9"
   license "MIT"
 
   on_macos do
     on_arm do
       url "https://github.com/aaa2015/mycode/releases/download/v#{version}/mycode-v#{version}-aarch64-apple-darwin.tar.gz",
           using: GitHubPrivateRepositoryReleaseDownloadStrategy
-      sha256 "07fcdcb3345bbfc77aebd7c75149f6e80d35f090dfd76a95727cebec5a32da6d"
+      sha256 "e1f47a672f4ae9d488eddb515b3153c246e654c8fead7018ef76e220d7896a9e"
     end
   end
 
