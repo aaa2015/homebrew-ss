@@ -90,10 +90,15 @@ class Mycode < Formula
 
   def post_install
     if OS.mac?
-      `security find-certificate -c mycodecodesign >/dev/null 2>&1`
-      if $?.success?
+      cert_output = `security find-certificate -c mycodecodesign 2>/dev/null || true`
+      if !cert_output.strip.empty?
         ohai "mycode: Detecting local code signing certificate, automatically signing the upgraded binary..."
-        system "#{bin}/mycode-setup-codesign", "--silent"
+        begin
+          system "#{bin}/mycode-setup-codesign", "--silent"
+        rescue => e
+          opoo "mycode: automatic codesign failed (this is expected during sandbox installations): #{e.message}"
+          opoo "Please run 'mycode-setup-codesign' manually after installation."
+        end
       end
     end
   end
