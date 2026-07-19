@@ -70,21 +70,32 @@ end
 class Mycode < Formula
   desc "AI coding assistant with TUI interface"
   homepage "https://github.com/aaa2015/mycode"
-  version "0.1.15"
+  version "0.1.16"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/aaa2015/mycode/releases/download/v#{version}/mycode-v#{version}-aarch64-apple-darwin.tar.gz",
+      url "https://github.com/aaa2015/mycode/releases/download/#{version}/mycode-#{version}-aarch64-apple-darwin.tar.gz",
           using: GitHubPrivateRepositoryReleaseDownloadStrategy
-      sha256 "1b26b82da54688375902b91d26bd37d850d8390852ba213ba8d8dac59651da76"
+      sha256 "ebd875fb1fff786c98acc110b04f42dd3ae579769ff97db40ae04fc3a422891e"
     end
   end
 
   def install
     bin.install "mycode"
     bin.install "mycode-gateway"
+    bin.install "scripts/mycode-setup-codesign"
     (share/"mycode").install "config.example.yaml"
+  end
+
+  def post_install
+    if OS.mac?
+      has_cert = system("security find-certificate -c mycodecodesign >/dev/null 2>&1")
+      if has_cert
+        ohai "mycode: Detecting local code signing certificate, automatically signing the upgraded binary..."
+        system "#{bin}/mycode-setup-codesign", "--silent"
+      end
+    end
   end
 
   def caveats
@@ -95,9 +106,13 @@ class Mycode < Formula
 
       Then edit ~/.config/mycode/config.yaml with your API keys.
 
-      Environment variables:
-        export DEEPSEEK_API_KEY="your-key"
-        export GEMINI_API_KEY="your-key"
+      For macOS Keychain access, if you want zero-prompt silent operation,
+      please run the setup script:
+        mycode-setup-codesign
+
+      If you want to completely uninstall mycode and clear all Keychain credentials,
+      please run the following command BEFORE running 'brew uninstall':
+        mycode-setup-codesign --clean
     EOS
   end
 
