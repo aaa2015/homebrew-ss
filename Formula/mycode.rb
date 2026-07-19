@@ -77,7 +77,7 @@ class Mycode < Formula
     on_arm do
       url "https://github.com/aaa2015/mycode/releases/download/#{version}/mycode-#{version}-aarch64-apple-darwin.tar.gz",
           using: GitHubPrivateRepositoryReleaseDownloadStrategy
-      sha256 "664ce8ccd91fb30be43a798230a680489a1d54986bcfd3150ed5ddbda264ec27"
+      sha256 "dab925f53e7d25782a8e0b575ccac2594e9746236300657fad1d91d356b106b9"
     end
   end
 
@@ -105,12 +105,6 @@ class Mycode < Formula
 
   def caveats
     <<~EOS
-      To get started, create a config file:
-        mkdir -p ~/.config/mycode
-        cp #{share}/mycode/config.example.yaml ~/.config/mycode/config.yaml
-
-      Then edit ~/.config/mycode/config.yaml with your API keys.
-
       For macOS Keychain access, if you want zero-prompt silent operation,
       please run the setup script:
         mycode-setup-codesign
