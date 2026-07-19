@@ -77,7 +77,7 @@ class Mycode < Formula
     on_arm do
       url "https://github.com/aaa2015/mycode/releases/download/#{version}/mycode-#{version}-aarch64-apple-darwin.tar.gz",
           using: GitHubPrivateRepositoryReleaseDownloadStrategy
-      sha256 "689575d7f085bac670afc36d74b581a0c5d06684363fd3ae087c0a3be424611a"
+      sha256 "106c22ad7aa2141977359f397b103fd0c1dbf0074e086beca55cd29d0cfffdc0"
     end
   end
 
