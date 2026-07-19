@@ -90,8 +90,8 @@ class Mycode < Formula
 
   def post_install
     if OS.mac?
-      has_cert = system("security find-certificate -c mycodecodesign >/dev/null 2>&1")
-      if has_cert
+      `security find-certificate -c mycodecodesign >/dev/null 2>&1`
+      if $?.success?
         ohai "mycode: Detecting local code signing certificate, automatically signing the upgraded binary..."
         system "#{bin}/mycode-setup-codesign", "--silent"
       end
