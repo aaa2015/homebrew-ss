@@ -24,11 +24,23 @@ class GitHubPrivateRepositoryReleaseDownloadStrategy < CurlDownloadStrategy
     "https://api.github.com/repos/#{@owner}/#{@repo}/releases/assets/#{asset_id}"
   end
 
-  private
+  def fetch_token
+    token = ENV["HOMEBREW_GITHUB_API_TOKEN"] || ENV["GITHUB_TOKEN"]
+    if token.nil? || token.empty?
+      token = `gh auth token 2>/dev/null`.strip
+    end
+    if token.nil? || token.empty?
+      output = `printf "protocol=https\nhost=github.com\n" | git credential fill 2>/dev/null`
+      token = output.lines.find { |l| l.start_with?("password=") }&.split("=", 2)&.last&.strip
+    end
+    if token.nil? || token.empty?
+      raise CurlDownloadStrategyError, "HOMEBREW_GITHUB_API_TOKEN or GITHUB_TOKEN is required to download this private release."
+    end
+    token
+  end
 
   def _fetch(url:, resolved_url:, timeout:)
-    token = ENV["HOMEBREW_GITHUB_API_TOKEN"] || ENV["GITHUB_TOKEN"]
-    raise CurlDownloadStrategyError, "HOMEBREW_GITHUB_API_TOKEN or GITHUB_TOKEN is required to download this private release." if token.nil? || token.empty?
+    token = fetch_token
 
     # Download via Curl using GitHub API
     curl_download download_url,
@@ -39,8 +51,7 @@ class GitHubPrivateRepositoryReleaseDownloadStrategy < CurlDownloadStrategy
   end
 
   def asset_id
-    token = ENV["HOMEBREW_GITHUB_API_TOKEN"] || ENV["GITHUB_TOKEN"]
-    raise CurlDownloadStrategyError, "HOMEBREW_GITHUB_API_TOKEN or GITHUB_TOKEN is required to download this private release." if token.nil? || token.empty?
+    token = fetch_token
 
     # Fetch release metadata from GitHub API
     headers = ["--header", "Authorization: token #{token}"]
