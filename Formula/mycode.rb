@@ -84,15 +84,18 @@ class Mycode < Formula
   version "0.1.20"
   license "MIT"
 
-  url "git@github.com:aaa2015/mycode.git", tag: "v#{version}", using: :git
-
-  depends_on "rust" => :build
+  on_macos do
+    on_arm do
+      url "https://github.com/aaa2015/mycode/releases/download/v#{version}/mycode-v#{version}-aarch64-apple-darwin.tar.gz",
+          using: GitHubPrivateRepositoryReleaseDownloadStrategy
+      sha256 "c5eb90852ba8df735bb0cd8e8d80b96c5b387ac90e5d67ca1994eca4f4dd1ea0"
+    end
+  end
 
   def install
-    system "cargo", "build", "--release", "--workspace"
-    bin.install "target/release/mycode"
-    bin.install "target/release/mycode-gateway"
-    bin.install "target/release/mycode-proxy-server"
+    bin.install "mycode"
+    bin.install "mycode-gateway"
+    bin.install "mycode-proxy-server"
     bin.install "scripts/mycode-setup-codesign"
     (share/"mycode").install "config.example.yaml"
   end
